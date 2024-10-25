@@ -1,3 +1,4 @@
+import ColorPicker from "./ColorPicker";
 import RowPin from "./RowPin";
 
 export default function Row() {
@@ -10,7 +11,7 @@ export default function Row() {
         {Array(4)
           .fill(0)
           .map((key) => (
-            <RowPin key={key} />
+            <ColorPicker key={key} />
           ))}
       </div>
       <div className="w-[20%] p-2">
