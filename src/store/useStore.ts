@@ -7,6 +7,11 @@ import { produce } from "immer";
 
 export type Color = (typeof COLORS)[keyof typeof COLORS];
 
+export interface Row {
+  row: number;
+  pins: Pin[];
+}
+
 export interface Pin {
   placement: "correct" | "misplaced" | "incorrect" | null;
   color: Color | null;
@@ -15,7 +20,7 @@ export interface Pin {
 }
 
 interface Store {
-  board: Pin[][];
+  board: Row[];
   currentRow: number;
   isGameRunning: boolean;
   numberOfRounds: number;
@@ -24,7 +29,7 @@ interface Store {
   createSolution: () => Color[];
   initializeGame: () => void;
   solution: Color[];
-  setColorOnBoard: (row: number, column: number, color: Color | null) => void;
+  setColorOnBoard: (row: number, column: number, updates: Partial<Pin>) => void;
 }
 
 export const useStore = create<Store>()(
@@ -53,10 +58,14 @@ export const useStore = create<Store>()(
         });
       },
       resetGame: () => set({ gameInitialized: false, solution: [] }),
-      setColorOnBoard: (row: number, column: number, color: Color | null) => {
+      setColorOnBoard: (row: number, column: number, updates) => {
         set(
           produce((state: Store) => {
-            state.board[row][column].color = color;
+            const rowOnBoard = state.board.find((r) => r.row === row);
+            if (!rowOnBoard) return;
+            const pin = rowOnBoard.pins.find((p) => p.column === column);
+            if (!pin) return;
+            Object.assign(pin, updates);
           })
         );
       },

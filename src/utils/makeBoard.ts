@@ -1,12 +1,13 @@
 import { GRID } from "../constants/grid";
-import { Pin } from "../store/useStore";
+import { Pin, Row } from "../store/useStore";
 
 export const makeBoard = () => {
-  let initialBoard: Pin[][] = [];
+  let initialBoard: Row[] = [];
   for (let i = GRID.ROWS - 1; i >= 0; i--) {
-    let row: Pin[] = [];
+    let row: Row = { row: i, pins: [] };
+
     for (let j = 0; j < GRID.ROW_LENGTH; j++) {
-      row.push({ row: i, column: j, color: null, placement: null });
+      row.pins.push({ row: i, column: j, color: null, placement: null });
     }
     initialBoard.push(row);
   }

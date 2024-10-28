@@ -2,7 +2,7 @@ import { Pin } from "../store/useStore";
 import { cn } from "../utils/cn";
 import ColorPicker from "./ColorPicker";
 
-export default function Row({
+export default function BoardRow({
   rowPins,
   className,
 }: {

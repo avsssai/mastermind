@@ -14,7 +14,7 @@ export default function ColorButton({
   const currentRow = useStore((state) => state.currentRow);
   const boardSetter = () => {
     console.log(row, column, "inside");
-    setColorOnBoard(row, column!, color);
+    setColorOnBoard(row, column!, { color });
   };
   const bg = color === null ? "" : color;
   return (
