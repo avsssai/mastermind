@@ -13,7 +13,7 @@ export default function Board() {
           <BoardRow key={index} rowPins={row.} />
         ))} */}
         {board.map((row) => (
-          <BoardRow key={row.row} rowPins={row.pins} />
+          <BoardRow key={row.row} rowPins={row.pins} row={row.row} />
         ))}
       </div>
     </div>

@@ -36,6 +36,7 @@ export default function ColorPicker({ pin }: { pin: Pin }) {
                 key={color}
                 row={pin.row}
                 column={pin.column}
+                onSelectColor={() => setOpen(false)}
               />
             ))}
           </div>

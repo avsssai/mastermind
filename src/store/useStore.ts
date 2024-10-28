@@ -3,7 +3,7 @@ import { COLORS } from "../constants/colors";
 import { createDistinctSolution } from "../utils/createSolution";
 import { persist } from "zustand/middleware";
 import { makeBoard } from "../utils/makeBoard";
-import { produce } from "immer";
+import { current, produce } from "immer";
 
 export type Color = (typeof COLORS)[keyof typeof COLORS];
 
@@ -30,6 +30,9 @@ interface Store {
   initializeGame: () => void;
   solution: Color[];
   setColorOnBoard: (row: number, column: number, updates: Partial<Pin>) => void;
+  judgeRow: () => void;
+  increaseRowCount: () => void;
+  checkGameComplete: () => void;
 }
 
 export const useStore = create<Store>()(
@@ -37,7 +40,7 @@ export const useStore = create<Store>()(
     (set) => ({
       board: [],
       currentRow: 0,
-      isGameRunning: false,
+      isGameRunning: true,
       gameInitialized: false,
       numberOfRounds: 3,
       score: 0,
@@ -58,6 +61,12 @@ export const useStore = create<Store>()(
         });
       },
       resetGame: () => set({ gameInitialized: false, solution: [] }),
+      increaseRowCount: () =>
+        set(
+          produce((state: Store) => {
+            ++state.currentRow;
+          })
+        ),
       setColorOnBoard: (row: number, column: number, updates) => {
         set(
           produce((state: Store) => {
@@ -66,6 +75,49 @@ export const useStore = create<Store>()(
             const pin = rowOnBoard.pins.find((p) => p.column === column);
             if (!pin) return;
             Object.assign(pin, updates);
+          })
+        );
+      },
+      checkGameComplete: () => {
+        set(
+          produce((state: Store) => {
+            const triesExhaust = state.currentRow >= 9;
+            const curRow = state.board.find((r) => r.row === state.currentRow);
+            let isGameRunning = state.isGameRunning;
+            const allComplete = curRow?.pins.every(
+              (pin) => pin.placement === "correct"
+            );
+            if (triesExhaust || allComplete) {
+              state.isGameRunning = false;
+            } else {
+              ++state.currentRow;
+            }
+          })
+        );
+      },
+      judgeRow: () => {
+        set(
+          produce((state: Store) => {
+            const currentRowNumber = state.currentRow;
+            const row = state.board.find((r) => r.row === currentRowNumber);
+            const solution = state.solution;
+            if (!row) return;
+            for (let i = 0; i < row.pins.length; i++) {
+              if (solution.includes(row.pins[i].color!)) {
+                if (row.pins[i].color === solution[i]) {
+                  row.pins[i].placement = "correct";
+                  continue;
+                } else {
+                  row.pins[i].placement = "misplaced";
+                }
+              } else {
+                row.pins[i].placement = "incorrect";
+              }
+            }
+            // state.checkGameComplete();
+            // if (state.isGameRunning) {
+            //   state.increaseRowCount();
+            // }
           })
         );
       },
