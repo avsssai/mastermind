@@ -1,5 +1,5 @@
 import { GRID } from "../constants/grid";
-import { Pin, Row } from "../store/useStore";
+import { Row } from "../store/useStore";
 
 export const makeBoard = () => {
   let initialBoard: Row[] = [];

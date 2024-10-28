@@ -1,8 +1,7 @@
-import { Color, useStore } from "../store/useStore";
+import { Color } from "../store/useStore";
 
 export default function RowPin({
   color,
-  row,
 }: {
   color: Color | null;
   row: number;
