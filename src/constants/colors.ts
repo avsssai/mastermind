@@ -5,4 +5,4 @@ export const COLORS = {
   BLACK: "black",
   GREEN: "green",
   BLUE: "blue",
-};
+} as const;

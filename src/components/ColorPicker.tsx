@@ -3,16 +3,19 @@ import RowPin from "./RowPin";
 import { useState } from "react";
 import { COLORS } from "../constants/colors";
 import ColorButton from "./ColorButton";
+import { Pin, useStore } from "../store/useStore";
 
-export default function ColorPicker() {
+export default function ColorPicker({ pin }: { pin: Pin }) {
   const [open, setOpen] = useState(false);
+
   return (
     <HoverCard.Root open={open}>
       <HoverCard.Trigger
         onClick={() => setOpen(!open)}
-        onBlur={() => setOpen(false)}
+
+        // onBlur={() => setOpen(false)}
       >
-        <RowPin />
+        <RowPin color={pin.color} row={pin.row} />
       </HoverCard.Trigger>
       <HoverCard.Portal>
         <HoverCard.Content
@@ -21,7 +24,12 @@ export default function ColorPicker() {
         >
           <div className="grid grid-cols-3 gap-4 items-center justify-center">
             {Object.values(COLORS).map((color) => (
-              <ColorButton color={color} key={color} />
+              <ColorButton
+                color={color}
+                key={color}
+                row={pin.row}
+                column={pin.column}
+              />
             ))}
           </div>
           <HoverCard.Arrow className="fill-white" />

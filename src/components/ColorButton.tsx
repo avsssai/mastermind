@@ -1,9 +1,30 @@
+import { Color, useStore } from "../store/useStore";
 import { cn } from "../utils/cn";
 
-export default function ColorButton({ color }: { color: string }) {
-  console.log(color);
-  let buttonBg = `bg-${color}-500`;
+export default function ColorButton({
+  color,
+  row,
+  column,
+}: {
+  color: Color | null;
+  row: number;
+  column: number | undefined;
+}) {
+  const setColorOnBoard = useStore((state) => state.setColorOnBoard);
+  const currentRow = useStore((state) => state.currentRow);
+  const boardSetter = () => {
+    console.log(row, column, "inside");
+    setColorOnBoard(row, column!, color);
+  };
+  const bg = color === null ? "" : color;
   return (
-    <button className={cn(`w-[40px] h-[40px] rounded-full`, buttonBg)}></button>
+    <button
+      className={cn(`w-[40px] h-[40px] rounded-full border-[1px] border-black`)}
+      style={{
+        background: bg,
+      }}
+      onClick={() => boardSetter()}
+      disabled={row !== currentRow}
+    ></button>
   );
 }
