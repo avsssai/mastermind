@@ -33,6 +33,7 @@ interface Store {
   judgeRow: () => void;
   increaseRowCount: () => void;
   checkGameComplete: () => void;
+  resetGame: () => void;
 }
 
 export const useStore = create<Store>()(
@@ -60,7 +61,17 @@ export const useStore = create<Store>()(
           return state;
         });
       },
-      resetGame: () => set({ gameInitialized: false, solution: [] }),
+      resetGame: () => {
+        set(
+          produce((state: Store) => {
+            state.gameInitialized = false;
+            state.board = [];
+            state.currentRow = 0;
+            state.score = 0;
+            state.initializeGame();
+          })
+        );
+      },
       increaseRowCount: () =>
         set(
           produce((state: Store) => {
