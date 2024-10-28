@@ -3,7 +3,7 @@ import { COLORS } from "../constants/colors";
 import { createDistinctSolution } from "../utils/createSolution";
 import { persist } from "zustand/middleware";
 import { makeBoard } from "../utils/makeBoard";
-import { current, produce } from "immer";
+import { produce } from "immer";
 
 export type Color = (typeof COLORS)[keyof typeof COLORS];
 
@@ -83,7 +83,6 @@ export const useStore = create<Store>()(
           produce((state: Store) => {
             const triesExhaust = state.currentRow >= 9;
             const curRow = state.board.find((r) => r.row === state.currentRow);
-            let isGameRunning = state.isGameRunning;
             const allComplete = curRow?.pins.every(
               (pin) => pin.placement === "correct"
             );

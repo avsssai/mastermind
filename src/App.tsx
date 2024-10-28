@@ -11,9 +11,7 @@ function App() {
 
   const currentRow = useStore((state) => state.currentRow);
   const judgeCurRow = useStore((state) => state.judgeRow);
-  const increaseRowCount = useStore((state) => state.increaseRowCount);
   const checkGameComplete = useStore((state) => state.checkGameComplete);
-  const isGameRunning = useStore((state) => state.isGameRunning);
   const board = useStore((state) => state.board);
   const curRowOnBoard = board.find((r) => r.row === currentRow);
   const allFilled = curRowOnBoard?.pins.some((pin) => pin.color === null);
