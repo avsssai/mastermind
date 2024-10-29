@@ -3,7 +3,7 @@ import Board from "./components/Board";
 import NewGameDialog from "./components/NewGameDialog";
 import FinalDialog from "./components/FinalDialog";
 import { useStore } from "./store/useStore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
   const initializeGame = useStore((state) => state.initializeGame);
@@ -13,7 +13,7 @@ function App() {
   }
   const [finalDialogOpen, setFinalDialogOpen] = useState(false);
   const currentRow = useStore((state) => state.currentRow);
-  const isGameRunning = useStore((state) => state.isGameRunning);
+  // const isGameRunning = useStore((state) => state.isGameRunning);
   const judgeCurRow = useStore((state) => state.judgeRow);
   const checkGameComplete = useStore((state) => state.checkGameComplete);
   const board = useStore((state) => state.board);
