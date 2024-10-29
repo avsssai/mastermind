@@ -6,10 +6,10 @@ export default function RowPin({
   color: Color | null;
   row: number;
 }) {
-  const bg = color === null ? "white" : color;
+  const bg = color === null ? "#ced4da" : color;
   return (
     <div
-      className="h-[30px] w-[30px] rounded-full outline-gray-400 outline p-1"
+      className="h-[30px] w-[30px] rounded-full  outline-gray-400 outline p-1"
       style={{ background: bg }}
     ></div>
   );

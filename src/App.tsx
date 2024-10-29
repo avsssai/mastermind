@@ -1,7 +1,9 @@
 import "./App.css";
 import Board from "./components/Board";
 import NewGameDialog from "./components/NewGameDialog";
+import FinalDialog from "./components/FinalDialog";
 import { useStore } from "./store/useStore";
+import { useEffect, useState } from "react";
 
 function App() {
   const initializeGame = useStore((state) => state.initializeGame);
@@ -9,8 +11,9 @@ function App() {
   if (!gameInitialized) {
     initializeGame();
   }
-
+  const [finalDialogOpen, setFinalDialogOpen] = useState(false);
   const currentRow = useStore((state) => state.currentRow);
+  const isGameRunning = useStore((state) => state.isGameRunning);
   const judgeCurRow = useStore((state) => state.judgeRow);
   const checkGameComplete = useStore((state) => state.checkGameComplete);
   const board = useStore((state) => state.board);
@@ -20,10 +23,12 @@ function App() {
     judgeCurRow();
 
     checkGameComplete();
-    // if (isGameRunning) {
-    //   increaseRowCount();
-    // }
   };
+
+  // useEffect(() => {
+  //   setFinalDialogOpen(true);
+  // }, [isGameRunning]);
+
   return (
     <div className="h-full md:p-8 flex flex-col justify-center">
       <div className="flex">
@@ -39,6 +44,7 @@ function App() {
           Submit Row {currentRow + 1}
         </button>
         <NewGameDialog />
+        <FinalDialog isOpen={finalDialogOpen} setIsOpen={setFinalDialogOpen} />
       </div>
     </div>
   );

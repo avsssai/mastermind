@@ -34,6 +34,7 @@ interface Store {
   increaseRowCount: () => void;
   checkGameComplete: () => void;
   resetGame: () => void;
+  gameWon: boolean;
 }
 
 export const useStore = create<Store>()(
@@ -45,6 +46,7 @@ export const useStore = create<Store>()(
       gameInitialized: false,
       numberOfRounds: 3,
       score: 0,
+      gameWon: false,
       solution: [],
       createSolution: () => createDistinctSolution(),
       initializeGame: () => {
@@ -56,6 +58,7 @@ export const useStore = create<Store>()(
               solution: sol,
               gameInitialized: true,
               board: initialBoard,
+              isGameRunning: true,
             };
           }
           return state;
@@ -98,6 +101,9 @@ export const useStore = create<Store>()(
               (pin) => pin.placement === "correct"
             );
             if (triesExhaust || allComplete) {
+              if (allComplete) {
+                state.gameWon = true;
+              }
               state.isGameRunning = false;
             } else {
               ++state.currentRow;
